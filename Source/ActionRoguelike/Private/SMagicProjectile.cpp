@@ -25,6 +25,13 @@ ASMagicProjectile::ASMagicProjectile()
 	MovementComp->bInitialVelocityInLocalSpace = true;
 }
 
+void ASMagicProjectile::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	SphereComp->OnComponentHit.AddDynamic(this, &ASMagicProjectile::OnActorHit);
+}
+
 // Called when the game starts or when spawned
 void ASMagicProjectile::BeginPlay()
 {
@@ -37,5 +44,11 @@ void ASMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ASMagicProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Destroy();
 }
 
